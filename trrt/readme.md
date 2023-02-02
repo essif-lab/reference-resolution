@@ -4,6 +4,9 @@ A tool for [Term Reference Resolution](https://essif-lab.github.io/framework/doc
 
 ## Deployment
 
+Install dependencies
+`npm install`
+
 Build .js files from .ts files:
 `npm run build`
 

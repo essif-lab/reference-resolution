@@ -2,16 +2,18 @@
 
 import { Resolver } from './Resolver';
 import { Logger } from "tslog";
-import chalk = require('chalk');
-import clear = require('clear');
-import figlet = require('figlet');
-import program = require('commander');
+const chalk = require('chalk');
+const clear = require('clear');
+const figlet = require('figlet');
+const Command = require('commander');
+const program = new Command();
 
 // const directoryPath: string = "C:\\Users\\degachic\\Documents\\workspace\\trrt\\framework-trrt\\docs\\tev2\\tests\\";
 // const outputPath: string = "C:\\Users\\degachic\\Documents\\workspace\\trrt\\framework-trrt\\docs\\tev2\\tests_converted\\";
 // const safPath = "C:\\Users\\degachic\\Documents\\workspace\\trrt\\framework-trrt\\docs\\tev2\\saf.yaml";
 
 clear();
+
 console.log(
       chalk.red(
             figlet.textSync('trrt-cli', { horizontalLayout: 'full' })
