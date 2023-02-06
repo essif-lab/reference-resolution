@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Term Ref(erence) Resolution Tool (TRRT) takes markdown files that contain so-called term refs (e.g. [ terms communities ]( terms-community@ctwg )) and creates a copy for each of these files in which all term refs are converted to so-called renderable refs, i.e. texts that can be further processed by tools such as Github pages, Docusaurus (plugins), etc., the result of which is that the rendered document contains markups that help readers to quickly find more explanations of the concept or other knowledge artifact that is being referenced. More informations at: [Term Reference Resolution](https://essif-lab.github.io/framework/docs/tev2/spec-tools/trrt).
+The Term Ref(erence) Resolution Tool (TRRT) takes markdown files that contain so-called term refs (e.g. `[terms communities](terms-community@ctwg)`) and creates a copy for each of these files in which all term refs are converted to so-called renderable refs, i.e. texts that can be further processed by tools such as Github pages, Docusaurus (plugins), etc., the result of which is that the rendered document contains markups that help readers to quickly find more explanations of the concept or other knowledge artifact that is being referenced. More informations at: [Term Reference Resolution](https://essif-lab.github.io/framework/docs/tev2/spec-tools/trrt).
 
 ### Who will use the TRRT
 
@@ -12,9 +12,9 @@ The TRRT will be used by terminology creators and curators to generate an redner
 
 For resolution to work, the following artefacts need to be present:
 
-      * The Scope Administration File (SAF);
-      * Access to (already existing) [MRGs](https://essif-lab.github.io/framework/docs/tev2/spec-tools/mrgt) insofar as they contain terms that are to be referenced in the refs that the tool creates;
-      * The curated texts that document the terms (or other artifacts) that are to be resolved by the TRRT.
+* The Scope Administration File (SAF);
+* Access to (already existing) [MRGs](https://essif-lab.github.io/framework/docs/tev2/spec-tools/mrgt) insofar as they contain terms that are to be referenced in the refs that the tool creates;
+* The curated texts that document the terms (or other artifacts) that are to be resolved by the TRRT.
 
 ## Local Deployment
 
