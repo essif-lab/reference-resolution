@@ -23,13 +23,13 @@ console.log(
 program
       .version('0.0.0')
       .description("A CLI for the Term Reference Resolution Toolkit")
-      .option('-o, --output <path>', 'Path to outut converted files to (required)')
+      .option('-o, --output <path>', 'Path to output converted files to (required)')
       .option('-s, --saf <path>', 'Path to read SAF file from (required)')
       .option('-c, --config <path>', 'Path to configuration .yaml file')
       .option('-d, --directory <path>', 'Path to directory where input files are located')
       .option('-V, --defaultversion <vsn>', 'Default version to use when no version is set in term')
       .option('-I, --interpreter <type>', 'Set interpreter to Standard or Alt syntax')
-      .option('-C, --converter <type>', 'Set converter to Mardownd HTTP or ESIFF output')
+      .option('-C, --converter <type>', 'Set converter to Markdown HTTP or ESIFF output')
       .parse(process.argv);
 
 async function main(): Promise<void> {
