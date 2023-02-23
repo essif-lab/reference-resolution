@@ -1,5 +1,5 @@
-import { Converter } from "./Converter";
-import { Interpreter } from "./Interpreter"
+import { Converter } from "./Converter.js";
+import { Interpreter } from "./Interpreter.js"
 
 export class AltInterpreter implements Interpreter {
       private termRegexGlobal = /(?<=[^`\\])\[(?=[^@\]]+@[:a-z0-9_-]*\](?:\([#a-z0-9_-]+\))?)(?P<showtext>.+?)@(?P<scopetag>[a-z0-9_-]*)(?::(?P<vsntag>[a-z0-9_-]+?))?\](?P<ref>\((?P<id>[a-z0-9_-]*)(?:#(?P<trait>[a-z0-9_-]+?))?\))?/g;

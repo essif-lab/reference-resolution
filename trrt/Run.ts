@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { Resolver } from './Resolver';
-import { Logger } from "tslog";
-const chalk = require('chalk');
-const clear = require('clear');
-const figlet = require('figlet');
-const Command = require('commander');
+import { Resolver } from './Resolver.js';
+import { Logger } from 'tslog';
+import chalk from 'chalk';
+import clear from 'clear';
+import figlet from 'figlet';
+import { Command } from 'commander';
 const program = new Command();
 
 // const directoryPath: string = "C:\\Users\\degachic\\Documents\\workspace\\trrt\\framework-trrt\\docs\\tev2\\tests\\";
@@ -34,10 +34,11 @@ program
 
 async function main(): Promise<void> {
       const log = new Logger();
-      if (!program.output || !program.saf) {
+      const options = program.opts();
+      if (!options.output || !options.saf) {
             program.outputHelp();
       } else {
-            let resolver: Resolver = new Resolver({ outputPath: program.output, scopePath: program.saf, directoryPath: program.directory, vsn: program.defaultversion, configPath: program.config, interpreterType: program.interpreter, converterType: program.converter });
+            let resolver: Resolver = new Resolver({ outputPath: options.output, scopePath: options.saf, directoryPath: options.directory, vsn: options.defaultversion, configPath: options.config, interpreterType: options.interpreter, converterType: options.converter});
             if (await resolver.resolve()) {
                   log.info("Resolution complete...");
             } else {

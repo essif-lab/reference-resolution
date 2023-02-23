@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeEach, afterEach } from '@jest/globals';
-import { Resolver } from '../Resolver';
+import { Resolver } from '../Resolver.js';
 
 beforeEach(() => { });
 

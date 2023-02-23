@@ -1,4 +1,4 @@
-import { Interpreter } from "./Interpreter";
+import { Interpreter } from "./Interpreter.js";
 export declare class StandardInterpreter implements Interpreter {
     private log;
     private termRegexGlobal;

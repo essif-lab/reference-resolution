@@ -14,10 +14,10 @@
     "trrt/tests/InterpreterTest.ts"
   ],
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "node16",
     "noImplicitAny": true,
-    "target": "es5",
-    "lib": ["es6", "es2015", "dom"],
+    "target": "ES2022",
+    "lib": ["es2022", "dom"],
     "declaration": true,
     "outDir": "trrt/dist",
     "rootDir": "trrt",

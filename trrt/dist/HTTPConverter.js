@@ -1,24 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HTTPConverter = void 0;
-var tslog_1 = require("tslog");
-var HTTPConverter = /** @class */ (function () {
-    function HTTPConverter() {
-        this.log = new tslog_1.Logger();
-    }
-    HTTPConverter.prototype.getType = function () {
+import { Logger } from "tslog";
+export class HTTPConverter {
+    log = new Logger();
+    constructor() { }
+    getType() {
         return "HTTP";
-    };
-    HTTPConverter.prototype.convert = function (glossary, properties) {
+    }
+    convert(glossary, properties) {
         var htmlOut = "";
         if (properties.get("scopetag") == "default") {
             if (properties.get("vsntag") == "latest") {
                 var term = glossary.get(properties.get("term"));
                 if (properties.get("trait") != "default") {
-                    htmlOut = "<a href=\"".concat(term, "#").concat(properties.get("trait"), "\"><span style=\"font-weight:bold>").concat(properties.get("showtext"), "</span></a>");
+                    htmlOut = `<a href="${term}#${properties.get("trait")}"><span style="font-weight:bold>${properties.get("showtext")}</span></a>`;
                 }
                 else {
-                    htmlOut = "<a href=\"".concat(term, "\"><span style=\"font-weight:bold>").concat(properties.get("showtext"), "</span></a>");
+                    htmlOut = `<a href="${term}"><span style="font-weight:bold>${properties.get("showtext")}</span></a>`;
                 }
                 this.log.info("The html term is: " + htmlOut);
             }
@@ -34,7 +30,5 @@ var HTTPConverter = /** @class */ (function () {
             // TODO go back and get the correct glossary
         }
         return htmlOut;
-    };
-    return HTTPConverter;
-}());
-exports.HTTPConverter = HTTPConverter;
+    }
+}

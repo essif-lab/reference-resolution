@@ -1,19 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ESSIFConverter = void 0;
-var tslog_1 = require("tslog");
-var ESSIFConverter = /** @class */ (function () {
-    function ESSIFConverter() {
-        this.log = new tslog_1.Logger();
-    }
-    ESSIFConverter.prototype.getType = function () {
+import { Logger } from "tslog";
+export class ESSIFConverter {
+    log = new Logger();
+    constructor() { }
+    getType() {
         return "ESIFF";
-    };
-    ESSIFConverter.prototype.convert = function (glossary, properties) {
+    }
+    convert(glossary, properties) {
         var esiffOut = "";
         if (properties.get("scopetag") == "default") {
             if (properties.get("vsntag") == "latest") {
-                esiffOut = "<Term popup=\"todo\" reference=\"".concat(properties.get("term"), "\">").concat(properties.get("showtext"), "</Term>");
+                esiffOut = `<Term popup="todo" reference="${properties.get("term")}">${properties.get("showtext")}</Term>`;
                 this.log.info("The esiff term is: " + esiffOut);
             }
             else {
@@ -28,7 +24,5 @@ var ESSIFConverter = /** @class */ (function () {
             // TODO go back and get the correct glossary
         }
         return esiffOut;
-    };
-    return ESSIFConverter;
-}());
-exports.ESSIFConverter = ESSIFConverter;
+    }
+}

@@ -1,4 +1,4 @@
-import { Converter } from "./Converter";
+import { Converter } from "./Converter.js";
 export declare class ESSIFConverter implements Converter {
     private log;
     constructor();

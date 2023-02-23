@@ -11892,7 +11892,7 @@
   "resolved" "https://registry.npmjs.org/trough/-/trough-1.0.5.tgz"
   "version" "1.0.5"
 
-"trrt@file:C:\\Users\\degachic\\Documents\\workspace\\esiff\\framework\\packages\\a":
+"trrt@file:C:\\Users\\degachic\\Documents\\workspace\\esiff\\reference-resolution\\packages\\a":
   "resolved" "file:packages/a"
   "version" "1.0.0"
 

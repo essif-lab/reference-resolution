@@ -1,17 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StandardInterpreter = void 0;
-var tslog_1 = require("tslog");
-var StandardInterpreter = /** @class */ (function () {
-    function StandardInterpreter() {
-        this.log = new tslog_1.Logger();
-        this.termRegexGlobal = /(?<=[^`\\])\[(?=[^@\]]+\]\([#a-z0-9_-]*@[:a-z0-9_-]*\))(?<showtext>.+?)\]\((?<id>[a-z0-9_-]+?)(?:#(?<trait>[a-z0-9_-]+?))?@(?<scopetag>[a-z0-9_-]*)(?::(?<vsntag>[a-z0-9_-]+?))?\)/g;
-        this.termRegexLocal = /(?<=[^`\\])\[(?=[^@\]]+\]\([#a-z0-9_-]*@[:a-z0-9_-]*\))(?<showtext>.+?)\]\((?<id>[a-z0-9_-]+?)(?:#(?<trait>[a-z0-9_-]+?))?@(?<scopetag>[a-z0-9_-]*)(?::(?<vsntag>[a-z0-9_-]+?))?\)/;
-    }
-    StandardInterpreter.prototype.getType = function () {
+import { Logger } from "tslog";
+export class StandardInterpreter {
+    log = new Logger();
+    termRegexGlobal = /(?<=[^`\\])\[(?=[^@\]]+\]\([#a-z0-9_-]*@[:a-z0-9_-]*\))(?<showtext>.+?)\]\((?<id>[a-z0-9_-]+?)(?:#(?<trait>[a-z0-9_-]+?))?@(?<scopetag>[a-z0-9_-]*)(?::(?<vsntag>[a-z0-9_-]+?))?\)/g;
+    termRegexLocal = /(?<=[^`\\])\[(?=[^@\]]+\]\([#a-z0-9_-]*@[:a-z0-9_-]*\))(?<showtext>.+?)\]\((?<id>[a-z0-9_-]+?)(?:#(?<trait>[a-z0-9_-]+?))?@(?<scopetag>[a-z0-9_-]*)(?::(?<vsntag>[a-z0-9_-]+?))?\)/;
+    constructor() { }
+    getType() {
         return "Standard";
-    };
-    StandardInterpreter.prototype.interpert = function (match) {
+    }
+    interpert(match) {
         var termProperties = new Map();
         if (match.groups != undefined) {
             if (match.groups.showtext != undefined && match.groups.showtext != "") {
@@ -57,16 +53,14 @@ var StandardInterpreter = /** @class */ (function () {
             else {
                 termProperties.set("vsntag", "latest");
             }
-            this.log.trace("Found term: ".concat(match));
+            this.log.trace(`Found term: ${match}`);
         }
         return termProperties;
-    };
-    StandardInterpreter.prototype.getGlobalTermRegex = function () {
+    }
+    getGlobalTermRegex() {
         return this.termRegexGlobal;
-    };
-    StandardInterpreter.prototype.getLocalTermRegex = function () {
+    }
+    getLocalTermRegex() {
         return this.termRegexLocal;
-    };
-    return StandardInterpreter;
-}());
-exports.StandardInterpreter = StandardInterpreter;
+    }
+}
