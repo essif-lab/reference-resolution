@@ -1,5 +1,7 @@
 import { Logger } from "tslog";
 import { Converter } from "./Converter.js";
+import { GlossaryEntry } from './GlossaryEntry.js';
+import { Glossary } from './Glossary.js';
 
 export class ESSIFConverter implements Converter {
       private log = new Logger();
@@ -10,7 +12,7 @@ export class ESSIFConverter implements Converter {
             return "ESIFF";
       }
 
-      convert(glossary: Map<string, string>, properties: Map<string, string>): string {
+      convert(glossaries: Map<Glossary, GlossaryEntry[]>, properties: Map<string, string>): string {
             var esiffOut: string = "";
             if (properties.get("scopetag") == "default") {
                   if (properties.get("vsntag") == "latest") {

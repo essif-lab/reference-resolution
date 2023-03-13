@@ -4,7 +4,9 @@ import { StandardInterpreter } from './StandardInterpreter.js';
 import { MarkdownConverter } from './MarkdownConverter.js';
 import { HTTPConverter } from './HTTPConverter.js';
 import { AltInterpreter } from './AltInterpreter.js';
-import { ESSIFConverter } from './ESIFFConverter.js'
+import { ESSIFConverter } from './ESIFFConverter.js';
+import { GlossaryEntry } from './GlossaryEntry.js';
+import { Glossary } from './Glossary.js';
 import { Logger } from 'tslog';
 
 import download = require('download');
@@ -17,7 +19,7 @@ export class Resolver {
       private output: string;
       // todo switch scope
       private scope: string;
-      private tmpLocalMrgFile: string  = "docs\\tev2\\glossaries\\mrg.mrgtest.yaml"; // temp
+      private tmpLocalMrgFile: string = "docs\\tev2\\glossaries\\mrg.mrgtest.yaml"; // temp
       private mrgWritePath = "./mrg.yaml"
       private config?: string;
       private directory: string = ".";
@@ -147,16 +149,16 @@ export class Resolver {
             return mrgURL;
       }
 
-      private async readGlossary(): Promise<Map<string, string>> {
-            var glossary: Map<string, string> = new Map();
+      private async readGlossaries(): Promise<Map<Glossary, GlossaryEntry[]>> {
+            var glossaries: Map<Glossary, GlossaryEntry[]>;
             var mrgURL: string = this.getMrgUrl();
             if (this.tmpLocalMrgFile) {
                   // this is for local testing
                   const mrgDocument: any = yaml.load(fs.readFileSync(this.tmpLocalMrgFile, 'utf8'));
-                  this.populateGlossary(mrgDocument, glossary);
+                  glossaries = this.populateGlossaries(mrgDocument);
                   this.log.info(`Populated glossary of ${this.scope}:${this.version}`);
-                  console.log(glossary);
-                  return glossary;
+                  console.log(glossaries);
+                  return glossaries;
             } else {
                   // remote mrg file                  
                   if (mrgURL != "") {
@@ -165,23 +167,33 @@ export class Resolver {
                         fs.writeFileSync(this.mrgWritePath, await download(mrgURL));
                         const mrgDocument: any = yaml.load(fs.readFileSync(this.mrgWritePath, 'utf8'));
                         this.log.info(`MRG loaded: ${mrgDocument}`);
-                        this.populateGlossary(mrgDocument, glossary);
+                        glossaries = this.populateGlossaries(mrgDocument);
                         this.log.info(`Populated gloassary of ${this.scope}:${this.version}`);
-                        console.log(glossary);
-                        return glossary;
+                        console.log(glossaries);
+                        return glossaries;
                   } else {
                         this.log.error("No MRG to download, glossary empty");
-                        return glossary;
+                        return new Map();
                   }
             }
       }
 
 
-      private populateGlossary(mrgDocument: Object, glossary: Map<string, string>): Map<string, string> {
+      private populateGlossaries(mrgDocument: Object): Map<Glossary, GlossaryEntry[]> {
             const mrg: Map<string, string> = new Map(Object.entries(mrgDocument));
+            var glossaries: Map<Glossary, GlossaryEntry[]> = new Map();
+            // todo import all glossaries 
+            var glossaryEntries: GlossaryEntry[] = [];
+
             for (const [key, value] of Object.entries(mrg.get("entries")!)) {
-                  var alternatives: string[];
                   const innerValues: Map<string, string> = new Map(Object.entries(yaml.load(JSON.stringify(value)!)!));
+
+                  var glossaryEntry = new GlossaryEntry(innerValues.get("term")!, `${this.baseURL}/${innerValues.get("navurl")}`);
+
+                  glossaryEntries.concat(glossaryEntry);
+                  // todo set hover and glossary text
+
+                  var alternatives: string[];
 
                   if (innerValues.get("formPhrases")) {
                         alternatives = innerValues.get("formPhrases")!.split(",");
@@ -209,15 +221,14 @@ export class Resolver {
                               }
                         }
 
-
-                        glossary.set(innerValues.get("term")!, `${this.baseURL}/${innerValues.get("navurl")}`);
                         for (var alternative of alternatives.filter(s => !s.includes("{"))) {
-                              glossary.set(alternative, `${this.baseURL}/${innerValues.get("navurl")}`);
+                              var altGlossaryEntry = new GlossaryEntry(alternative, `${this.baseURL}/${innerValues.get("navurl")}`);
+                              glossaryEntries.concat(altGlossaryEntry);
                         }
 
                   }
             }
-            return glossary;
+            return glossaries;
       }
 
       private createOutputDir(): boolean {
@@ -239,11 +250,11 @@ export class Resolver {
             fs.writeFileSync(this.output + file, data);
       }
 
-      private interpertAndConvert(data: string, glossary: Map<string, string>): string {
+      private interpertAndConvert(data: string, glossaries: Map<Glossary, GlossaryEntry[]>): string {
             const matches: IterableIterator<RegExpMatchArray> = data.matchAll(this.interpreter!.getGlobalTermRegex());
             for (const match of Array.from(matches)) {
                   var termProperties: Map<string, string> = this.interpreter!.interpert(match);
-                  var replacement = this.converter!.convert(glossary, termProperties);
+                  var replacement = this.converter!.convert(glossaries, termProperties);
                   if (replacement != "") {
                         data = data.replace(this.interpreter!.getLocalTermRegex(), replacement);
                   }
@@ -261,7 +272,7 @@ export class Resolver {
                   if (path.extname(file) == ".md" || path.extname(file) == ".html") {
                         var data = fs.readFileSync(this.directory + "/" + file, 'utf8')
                         this.log.trace("Reading: " + file);
-                        data = this.interpertAndConvert(data, await this.readGlossary());
+                        data = this.interpertAndConvert(data, await this.readGlossaries());
                         this.writeFile(file, data);
                   } else {
                         this.log.error(file + " does not have a recognised file type (*.md, *.html)");
